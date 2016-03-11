@@ -90,11 +90,11 @@ public class CollectAlignmentSummaryMetrics extends SinglePassSamProgram {
             "          I=input.bam \\<br />" +
             "          O=output.txt" +
             "</pre>"+
-            "For detailed explanations of each output metric, please see the AlignmentSummaryMetrics section of our " +
-            "<a href=\"http://broadinstitute.github.io/picard/picard-metric-definitions.html#AlignmentSummaryMetrics\"" +
-            "<b>metrics definitions</b></a> webpage." +
-            ""+
+            "<p>Please see the CollectAlignmentSummaryMetrics " +
+            "<a href=\"http://broadinstitute.github.io/picard/picard-metric-definitions.html#AlignmentSummaryMetrics\">definitions</a> " +
+            "for a complete description of the metrics produced by this tool.</p>" +
             "<hr />";
+
     private static final Log log = Log.getInstance(CollectAlignmentSummaryMetrics.class);
 
     @Option(doc="Paired-end reads above this insert size will be considered chimeric along with inter-chromosomal pairs.")

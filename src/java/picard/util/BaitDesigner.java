@@ -44,17 +44,14 @@ import java.util.regex.Pattern;
                 programGroup = None.class
         )
 public class BaitDesigner extends CommandLineProgram {
-static final String USAGE_SUMMARY = "Designs baits or oligonucleotides for hybrid selection reactions.  ";
-static final String USAGE_DETAILS = "<p>This tool uses an interval file corresponding to discrete sequences to design synthetic \"baits\" for hybrid selection experiments.  " +
-        "" +
-        "Hybrid selection enriches a genomic sample for specific or \"target\" sequences e.g. exons.  " +
-        "For additional information on hybrid selection, please refer to the GATK " +
-        "<a href=\"http://gatkforums.broadinstitute.org/gatk/discussion/6331\">Dictionary</a> entry.</p>" +
-        "" +
-        "Briefly, users input a (TARGET) interval list file indicating the sequences of interest e.g. exons with their respective coordinates, a reference sequence, and a unique identifier string (DESIGN_NAME).  " +
+static final String USAGE_SUMMARY = "Designs oligonucleotide baits for hybrid selection reactions.  ";
+static final String USAGE_DETAILS = "<p>This tool is used to design custom bait sets for hybrid selection experiments.  " +
+        "Briefly, the following files are input into BaitDesigner including: a (TARGET) interval list indicating the sequences of interest " +
+        "e.g. exons with their respective coordinates, a reference sequence, and a unique identifier string (DESIGN_NAME).  " +
         "The program outputs interval list files of both \"bait\" and \"target\" sequences as well as the actual bait sequences in fasta format." +
         "  At least two baits are output for each target sequence with greater numbers for larger intervals.  Although the default values for both bait size" +
-        " (120 bases) and offsets (80 bases) are suitable for most applications, users have the option to customize these values. Offsets represent the distance between sequential baits on a contiguous stretch of target DNA sequence.  "+
+        " (120 bases) and offsets (80 bases) are suitable for most applications, users have the option to customize these values. Offsets " +
+        "represent the distance between sequential baits on a contiguous stretch of target DNA sequence.  "+
         "" +
         "This program also outputs files consisting of a pooled set of 55,000 (default) oligonucleotides representing all of the baits " +
         "redundantly.  This redundancy achieves a uniform concentration of olignucleotides for synthesis by a vendor as well as equal numbers" +
@@ -68,7 +65,6 @@ static final String USAGE_DETAILS = "<p>This tool uses an interval file correspo
         "     R=reference_sequence.fasta " +
         "</pre> " +
         "<hr />";
-
     /**
      * Subclass of Interval for representing Baits, that caches the bait sequence.
      */

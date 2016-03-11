@@ -64,16 +64,31 @@ import java.util.Set;
 )
 public class CollectRrbsMetrics extends CommandLineProgram {
     static final String USAGE_SUMMARY = "Collects metrics from reduced representation bisulfite sequencing (RRBS) data.  ";
-    static final String USAGE_DETAILS = "<p>Data collected is based on the methylation status of cytosine (C) " +
-            "bases in both CpG  \"hotspots\" and non-CpG sites across all reads of a BAM/SAM file. For a brief primer on bisulfite sequencing and " +
-            "cytosine methylation, please see our GATK " +
+    static final String USAGE_DETAILS = "<p>This quality control tool uses reduced representation bisulfite sequencing (RRBS) data to determine" +
+            " cytosine methylation status across all reads of a BAM/SAM file.  For a brief primer on bisulfite sequencing and cytosine " +
+            "methylation, please see the corresponding GATK "+
             "<a href='https://www.broadinstitute.org/gatk/guide/article?id=6330'><b>Dictionary</b></a> entry.</p>" +
+            "Methylated sites are resistant to bisulfite reduction which converts non-methylated cytosine (C) to uracil (U) bases.  " +
+
             "" +
-            "<p>This tool outputs a DetailMetrics table on CpG \"hotspots\" and their conversion [C -> T (+ strand) or G -> A (- strand)] frequencies.  " +
-            "This conversion frequency is used to determine the methylation status of CpG sites.</p>" +
+            "The rates of conversion are determined using an unmethylated internal control sequence (lambda phage DNA) added to the experimental sample." +
+            "  The conversion rates on the control sample can be calculated as follows: [converted/(converted + unconverted)]," +
+            " where conversion refers to the transition of [C -> T (+ strand) or G -> A (- strand)].  " +
+            "Moreover, this control enables the conversion rate to be calculated for both CpG 'hotspots' and non-CpG cytosines." +
             "" +
-            "<p>However, since cytosine methylation is not exclusive for CpG \"hotspots\", the CollectRrbsMetrics tool also outputs a SummaryMetrics table " +
-            "indicating both the number of CpG and non-CpG cytosines as well as the respective conversion frequencies.  " +
+
+
+            "<p>The CpG CollectRrbsMetrics tool outputs three files including summary and detail metrics tables as well as a '.pdf' " +
+            "with graphs indicating the conversion rates (both CpG and non-CpG), CpG conversion rate distribution, distribution of CpGs by converage, and reads discarded.  " +
+            "" +
+            ""+
+            "Detail metrics produce a table containing:" +
+            "" +
+            "" +
+            "sequences of all of the observed CpG sites, their respective positions within the sequence, the total numbers of sites observed, and the percentage of converted sites (C -> T) CONVERTED_SITES\tPCT_CONVERTED" +
+            " \"hotspots\", the indicating both the number of CpG and non-CpG cytosines as well as their respective conversion frequencies.  The conversion frequency is defined as:" +
+            " [C -> T (+ strand) or G -> A (- strand)].</p>" +
+            "" +
             "The tool also outputs the numbers of reads having no CpG sites, and the numbers of reads discarded from the " +
             "analysis due to inadequate size or excessive numbers of mismatches.</p>" +
             "" +
@@ -94,7 +109,12 @@ public class CollectRrbsMetrics extends CommandLineProgram {
             "<b>RrbsCpgDetailMetrics</b></a> and the " +
             "<a href='https://broadinstitute.github.io/picard/picard-metric-definitions.html#RrbsSummaryMetrics'>" +
             "<b>RrbsSummaryMetrics</b></a>.</p>" +
-            "<hr />";
+            "<hr />"+
+
+    "resulting from cytosine methylation, typically occuring at CpG 'hotspots' but not always."
+
+
+            ;
 
 // Path to R file for plotting purposes
 
