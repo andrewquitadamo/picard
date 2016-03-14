@@ -63,38 +63,24 @@ import java.util.Set;
         programGroup = Metrics.class
 )
 public class CollectRrbsMetrics extends CommandLineProgram {
-    static final String USAGE_SUMMARY = "Collects metrics from reduced representation bisulfite sequencing (RRBS) data.  ";
-    static final String USAGE_DETAILS = "<p>This quality control tool uses reduced representation bisulfite sequencing (RRBS) data to determine" +
-            " cytosine methylation status across all reads of a BAM/SAM file.  For a brief primer on bisulfite sequencing and cytosine " +
-            "methylation, please see the corresponding GATK "+
-            "<a href='https://www.broadinstitute.org/gatk/guide/article?id=6330'><b>Dictionary</b></a> entry.</p>" +
-            "Methylated sites are resistant to bisulfite reduction which converts non-methylated cytosine (C) to uracil (U) bases.  " +
+    static final String USAGE_SUMMARY = "Collects metrics from reduced representation bisulfite sequencing (Rrbs) data.  ";
+    static final String USAGE_DETAILS = "<p>This tool uses reduced representation bisulfite sequencing (Rrbs) data to determine cytosine " +
+            "methylation status across all reads of a genomic DNA sequence.  For a primmer on bisulfite sequencing and cytosine methylation, " +
+            "please see the corresponding GATK <a href='https://www.broadinstitute.org/gatk/guide/article?id=6330'><b>Dictionary</b></a> entry. </p>" +
+            "" +
+            "<p>Briefly, bisulfite reduction converts un-methylated cytosine (C) to uracil (U) bases.  Methylated sites are not converted " +
+            "because they are resistant to bisulfite reduction.  Subsequent to PCR amplification of" +
+            " the reaction products, bisulfite reduction manifests as [C -> T (+ strand) or G -> A (- strand)] base conversions.  Thus, conversion rates" +
+            " can be calculated from the reads as follows: [CR = converted/(converted + unconverted)].</p>  " +
 
-            "" +
-            "The rates of conversion are determined using an unmethylated internal control sequence (lambda phage DNA) added to the experimental sample." +
-            "  The conversion rates on the control sample can be calculated as follows: [converted/(converted + unconverted)]," +
-            " where conversion refers to the transition of [C -> T (+ strand) or G -> A (- strand)].  " +
-            "Moreover, this control enables the conversion rate to be calculated for both CpG 'hotspots' and non-CpG cytosines." +
-            "" +
+            "<p>The CpG CollectRrbsMetrics tool outputs three files including summary and detail metrics tables as well as a '.pdf' containing " +
+            "four graphs.  These graphs are derived from the summary table and include a comparison of conversion rates for both CpG and non-CpG sites, " +
+            "the distribution of total numbers of CpG sites as a function of the CpG conversion rates, the distribution of CpG sites by the level of read converage (depth), " +
+            "and the numbers of reads discarded resulting from either exceeding the mismatch rate or size (too short).  The detail metrics " +
+            "table includes the coordinates of all of the CpG sites for the experiment as well as the conversion rates observed for each site.</p>" +
 
-
-            "<p>The CpG CollectRrbsMetrics tool outputs three files including summary and detail metrics tables as well as a '.pdf' " +
-            "with graphs indicating the conversion rates (both CpG and non-CpG), CpG conversion rate distribution, distribution of CpGs by converage, and reads discarded.  " +
-            "" +
-            ""+
-            "Detail metrics produce a table containing:" +
-            "" +
-            "" +
-            "sequences of all of the observed CpG sites, their respective positions within the sequence, the total numbers of sites observed, and the percentage of converted sites (C -> T) CONVERTED_SITES\tPCT_CONVERTED" +
-            " \"hotspots\", the indicating both the number of CpG and non-CpG cytosines as well as their respective conversion frequencies.  The conversion frequency is defined as:" +
-            " [C -> T (+ strand) or G -> A (- strand)].</p>" +
-            "" +
-            "The tool also outputs the numbers of reads having no CpG sites, and the numbers of reads discarded from the " +
-            "analysis due to inadequate size or excessive numbers of mismatches.</p>" +
-            "" +
-            "<p>Finally, the tool outputs graphs representing the following four metrics: the bisulfite conversion rate for CpG and non-CpG cytosines, " +
-            "a distribution of the numbers of CpG sites as a function of CpG conversion rate, the distribution of CpG sites by read coverage (depth)," +
-            " and the numbers of reads discarded due to high numbers of mismatches or inadequate read size.</p>" +
+            "<p>Since methylated cytosines are protected against Rrbs-mediated conversion, the methylation rate (MR) can be derived as follows:  " +
+            "[MR = unconverted/(converted + unconverted) = (1 - CR)].</p>" +
             "" +
             "<h4>Usage example:</h4>" +
             "<pre>" +
@@ -104,17 +90,10 @@ public class CollectRrbsMetrics extends CommandLineProgram {
             "      R=reference_sequence.fasta" +
             "</pre>" +
             "" +
-            "<p>For detailed explanations of the output metrics please see the following sites describing "+
-            "<a href='https://broadinstitute.github.io/picard/picard-metric-definitions.html#RrbsCpgDetailMetrics'>" +
-            "<b>RrbsCpgDetailMetrics</b></a> and the " +
-            "<a href='https://broadinstitute.github.io/picard/picard-metric-definitions.html#RrbsSummaryMetrics'>" +
-            "<b>RrbsSummaryMetrics</b></a>.</p>" +
-            "<hr />"+
-
-    "resulting from cytosine methylation, typically occuring at CpG 'hotspots' but not always."
-
-
-            ;
+            "<p>Please see the CollectRrbsMetrics " +
+            "<a href='https://broadinstitute.github.io/picard/picard-metric-definitions.html#RrbsCpgDetailMetrics'>definitions</a>" +
+            " for a complete description of both the detail and summary metrics produced by this tool.</p>" +
+            "<hr />";
 
 // Path to R file for plotting purposes
 
